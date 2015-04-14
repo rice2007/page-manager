@@ -8,13 +8,13 @@ import java.util.Random;
  */
 public class PageManager {
 
-    private static final int PAGE_UPPER_BOUND = 20; //100
-    private static final int FREQUENT_PAGE_UPPER_BOUND = 4; //20
-    private static final int NONFREQUENT_PAGE_OFFSET = 17; //79
+    private static final int PAGE_UPPER_BOUND = 100; //100
+    private static final int FREQUENT_PAGE_UPPER_BOUND = 10; //10
+    private static final int NONFREQUENT_PAGE_OFFSET = 89; //89
     private static final int PAGE_LOWER_BOUND = 0;
 
     private static final int RES_SET_SIZE = 5;
-    private static final int STREAM_SIZE = 20;
+    private static final int STREAM_SIZE = 30;
     private static final int LOOK_AHEAD_LENGTH = 5;
 
     private int[] resSet;
@@ -52,13 +52,28 @@ public class PageManager {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < this.resSet.length; i++) {
-            sb.append("[" + this.resSet[i] + "]\n");
+            sb.append("[" + this.resSet[i] + "]");
         }
+        sb.append("\n");
         return sb.toString();
     }
-    
+
     private int lookAhead(int[] pageStream, int streamSentinel) {
-        int minIndex = Integer.MAX_VALUE;
+        for (int i = 0; i < this.resSet.length; i++) {
+            for (int j = streamSentinel; j < streamSentinel + LOOK_AHEAD_LENGTH; j++) {
+                if (this.resSet[i] == pageStream[j]) {
+                    this.lookAheadIndex[i] = j;
+                } else {
+                    this.
+                }
+            }
+        }
+
+        return 1;
+    }
+
+    /*private int lookAhead(int[] pageStream, int streamSentinel) {
+        int minIndex = Integer.MIN_VALUE;
         for (int i = 0; i < 5; i++) {
             for (int j = streamSentinel; j < streamSentinel + LOOK_AHEAD_LENGTH; j++) {
                 try {
@@ -66,7 +81,7 @@ public class PageManager {
                         this.lookAheadIndex[i] = j - streamSentinel;
                         break;
                     } else {
-                        this.lookAheadIndex[i] = Integer.MAX_VALUE;
+                        this.lookAheadIndex[i] = Integer.MIN_VALUE;
                     }
                 } catch (Exception e) {
                     break;
@@ -75,10 +90,10 @@ public class PageManager {
             if (this.lookAheadIndex[i] < minIndex) {
                 minIndex = i;
             }
-            this.lookAheadIndex[i] = Integer.MAX_VALUE;
+            this.lookAheadIndex[i] = Integer.MIN_VALUE;
         }
         return minIndex;
-    }
+    }*/
 
     /**
      * Generates a random page using the 80-20 rule.
@@ -120,10 +135,10 @@ public class PageManager {
                 } else {
                     System.out.println("Page fault!");
                     int replacementIndex = manager.lookAhead(pageStream, i + 1);
-                    if (replacementIndex < Integer.MAX_VALUE) {
-                        manager.resSet[replacementIndex] = pageStream[i];
-                    } else {
+                    if (replacementIndex == Integer.MIN_VALUE) {
                         manager.resSet[0] = pageStream[i];
+                    } else {
+                        manager.resSet[replacementIndex] = pageStream[i];
                     }
                 }
             }
