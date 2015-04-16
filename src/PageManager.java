@@ -50,14 +50,6 @@ public class PageManager {
         return maxIndex;
     }
 
-    /**
-     * Generates a random page using the 90-10 rule.
-     *
-     * Generates a random number from 0 to 99 (inclusive). Generates a page from 0 to 19 (inclusive) if random number
-     * is in the frequent range and from 20-99 (inclusive) if random number is out of the frequent range.
-     *
-     *  @return the page number generated
-     */
     private static int generateStream() {
         Random rand = new Random();
         return rand.nextInt(PAGE_UPPER_BOUND) <= NONFREQUENT_PAGE_OFFSET ?
